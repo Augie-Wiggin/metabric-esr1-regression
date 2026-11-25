@@ -53,3 +53,8 @@ rsconnect/
 src/*.o
 src/*.so
 src/*.dll
+
+/data/raw/
+/data/processed/
+
+.DS_Store
