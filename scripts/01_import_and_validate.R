@@ -184,6 +184,7 @@ analysis_data$CELLULARITY[
 table(analysis_data$GRADE, useNA = "ifany")
 table(analysis_data$CELLULARITY, useNA = "ifany")
 table(analysis_data$COHORT, useNA = "ifany")
+sum(complete.cases(analysis_data[candidate_variables]))
 
 # Summarize numeric candidate variables.
 summary(analysis_data[c(
@@ -191,11 +192,6 @@ summary(analysis_data[c(
   "TUMOR_SIZE",
   "LYMPH_NODES_EXAMINED_POSITIVE"
 )])
-
-table(analysis_data$GRADE, useNA = "ifany")
-table(analysis_data$CELLULARITY, useNA = "ifany")
-table(analysis_data$COHORT, useNA = "ifany")
-sum(complete.cases(analysis_data[candidate_variables]))
 
 # Create the complete-case modeling dataset.
 model_data <- analysis_data[
