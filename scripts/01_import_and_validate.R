@@ -155,12 +155,13 @@ names(analysis_data)
 candidate_variables <- c(
   "ESR1_expression",
   "ER_IHC",
+  "PR_STATUS",
+  "HER2_STATUS",
   "AGE_AT_DIAGNOSIS",
   "GRADE",
   "TUMOR_SIZE",
   "LYMPH_NODES_EXAMINED_POSITIVE",
-  "CELLULARITY",
-  "COHORT"
+  "CELLULARITY"
 )
 
 count_missing <- function(x) {
@@ -171,6 +172,11 @@ count_missing <- function(x) {
   }
 }
 
+# Review tumor stage as an alternative predictor
+str(analysis_data$TUMOR_STAGE)
+count_missing(analysis_data$TUMOR_STAGE)
+table(analysis_data$TUMOR_STAGE, useNA = "ifany")
+
 sapply(analysis_data[candidate_variables], count_missing)
 str(analysis_data[candidate_variables])
 
@@ -180,10 +186,13 @@ analysis_data$CELLULARITY[
     trimws(analysis_data$CELLULARITY) == ""
 ] <- NA
 
-# Check categories and their counts.
+
+# Check categories for the candidate variables
+table(analysis_data$PR_STATUS, useNA = "ifany")
+table(analysis_data$HER2_STATUS, useNA = "ifany")
 table(analysis_data$GRADE, useNA = "ifany")
 table(analysis_data$CELLULARITY, useNA = "ifany")
-table(analysis_data$COHORT, useNA = "ifany")
+
 sum(complete.cases(analysis_data[candidate_variables]))
 
 # Summarize numeric candidate variables.
@@ -198,11 +207,12 @@ model_data <- analysis_data[
   complete.cases(analysis_data[candidate_variables]),
   candidate_variables]
 
-# Treat categorical predictors as factors.
+# Treat categorical predictors as factors
 model_data$ER_IHC <- factor(model_data$ER_IHC)
+model_data$PR_STATUS <- factor(model_data$PR_STATUS)
+model_data$HER2_STATUS <- factor(model_data$HER2_STATUS)
 model_data$GRADE <- factor(model_data$GRADE)
 model_data$CELLULARITY <- factor(model_data$CELLULARITY)
-model_data$COHORT <- factor(model_data$COHORT)
 
 # Confirm the size and variable types.
 dim(model_data)
